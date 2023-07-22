@@ -5,14 +5,11 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $statement = $pdo->prepare('SELECT*FROM products ORDER BY create_date DESC'); 
 $statement->execute();
 $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-var_dump($products);
+//var_dump($products);
 
-echo '<pre>';
-var_dump($products);
-echo '<pre>';
 ?>
 
-
+<!doctype html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -26,34 +23,36 @@ echo '<pre>';
   </head>
   <body>
     <h1>Products CRUD</h1>
+    <p>
+      <a href="create.php" class= "btn btn-success">Create Product</a>
+    </p>
     <table class="table">
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Image</th>
+      <th scope="col">Title</th>
+      <th scope="col">Price</th>
+      <th scope="col">Create Date</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
+    <?php foreach ($products as $i=> $product):?>
+      <tr>
+      <th scope="row"><?php echo $i +1?></th>
+      <td></td>
+      <td><?php echo $product['title'] ?></td>
+      <td><?php echo $product['price'] ?></td>
+      <td><?php echo $product['create_date'] ?></td>
+      <td><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></td>
+      <td><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></td>
       <td>Otto</td>
       <td>@mdo</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+  
+   <!--removing curly braces to put endforeach-->
+   <?php endforeach; ?>
   </tbody>
 </table>
 
