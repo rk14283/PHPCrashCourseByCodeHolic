@@ -5,6 +5,15 @@ $pdo = new PDO('mysql:host=localhost; port=3306; dbname=products_crud', 'root', 
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 //var_dump($products);
 
+echo '<pre>';
+var_dump($_FILES);
+echo '</pre>'; 
+exit; 
+$errors = [];
+$title = '';
+$price = '';
+$description = ''; 
+
 $title = $_POST['title']; //test
 $description = $_POST['description'];
 $price = $_POST['price'];
@@ -18,6 +27,8 @@ VALUES(:title, :image, :description, :price, :date)
 echo $_SERVER['REQUEST_METHOD']; 
 if($_SERVER['REQUEST_METHOD']==='POST'){
 
+    if (empty($errors)){
+    
 
 $statement ->bindValue(':title', $title);
 $statement ->bindValue(':image', '');
@@ -25,7 +36,22 @@ $statement ->bindValue(':description', $description);
 $statement ->bindValue(':price', $price);
 $statement ->bindValue(':date', $date);
 $statement ->execute();
+
+    }
+if(!$title){
+$errors[] = 'Product title is required';
+
 }
+
+
+if(!$price){
+    $errors[] = 'Product price is required';
+    
+    }
+   
+}
+
+
 ?>
 
 <!doctype html>
@@ -42,6 +68,15 @@ $statement ->execute();
   </head>
   <body>
     <h1>Create new Product</h1>
+    <?php if(!empty($errors)): ?>
+    <div class="alert alert-danger">
+<?php foreach($errors as $error): ?>
+  <div><?php echo $error?></div>
+  <?php endforeach; ?>
+
+    </div>
+<?php endif;?>
+
     <form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label>Product Image</label><br>
